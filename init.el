@@ -363,6 +363,13 @@ before packages are loaded."
   ;; 让 Emacs 启动时自动加载 pyim 词库
   (add-hook 'emacs-startup-hook
             #'(lambda () (pyim-restart-1 t)))
+  ;;;; 设置等宽字体
+  ;; Note: The Hiragino Sans GB is bundled with MacOS X.
+  ;; If you are not using MacOS X, you should change it to another Chinese font name.
+  ;;(spacemacs//set-monospaced-font   "Source Code Pro" "Hiragino Sans GB" 14 16)
+  ;;;; youdao 快捷键
+  (define-key global-map (kbd "C-c y") 'youdao-dictionary-search-at-point+)
+  (spacemacs/set-leader-keys "oy" 'youdao-dictionary-search-at-point+)
   )
 
 
