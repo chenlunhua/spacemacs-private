@@ -49,6 +49,8 @@ This function should only modify configuration layer settings."
      ;; spell-checking
      ;; syntax-checking
      ;; version-control
+     chinese
+     (chinese :variables chinese-enable-youdao-dict t)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -238,7 +240,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
@@ -270,7 +272,7 @@ It should only modify the values of Spacemacs settings."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers t
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -346,7 +348,23 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  ;;;; 输入法配置
+  (setq pyim-default-scheme 'pyim-shuangpin)
+  (pyim-basedict-enable)
+  (setq-default pyim-punctuation-half-width-functions
+                '(pyim-probe-punctuation-line-beginning
+                  pyim-probe-punctuation-after-punctuation))
+  ;; 使用 pupup-el 来绘制选词框
+  (setq pyim-page-tooltip 'popup)
+  ;; 单行模式
+  ;;(setq pyim-page-style 'one-line)
+  ;; 选词框显示5个候选词
+  (setq pyim-page-length 5)
+  ;; 让 Emacs 启动时自动加载 pyim 词库
+  (add-hook 'emacs-startup-hook
+            #'(lambda () (pyim-restart-1 t)))
   )
+
 
 (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
 (load custom-file 'no-error 'no-message)
@@ -357,18 +375,4 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (volatile-highlights vi-tilde-fringe symon string-inflection spaceline powerline rainbow-delimiters password-generator org-bullets lorem-ipsum highlight-indentation helm-themes helm-swoop helm-purpose window-purpose imenu-list helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds google-translate flx-ido fancy-battery eyebrowse evil-unimpaired evil-mc evil-lisp-state smartparens evil-lion evil-indent-plus evil-exchange evil-escape evil-ediff evil-args editorconfig define-word clean-aindent-mode ace-jump-helm-line youdao-dictionary xterm-color ws-butler wrap-region winum which-key wgrep web-mode visual-regexp-steroids uuidgen use-package unfill toc-org tiny tagedit solarized-theme smex slim-mode sicp shell-pop scss-mode sass-mode reveal-in-osx-finder restart-emacs ranger rainbow-mode rainbow-identifiers racket-mode pug-mode prodigy popwin persp-mode peep-dired pcre2el pbcopy paredit paradox pangu-spacing osx-trash osx-dictionary origami org-pomodoro org-plus-contrib open-junk-file nodejs-repl neotree mwim multiple-cursors multi-term move-text mmm-mode markdown-toc macrostep lispy linum-relative link-hint less-css-mode launchctl ivy-hydra info+ indent-guide impatient-mode ibuffer-projectile hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-global hide-comnt help-fns+ helm-github-stars helm-ag graphviz-dot-mode golden-ratio gnuplot gitignore-mode github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ gist ggtags fuzzy flyspell-correct-ivy flycheck-pos-tip flx find-file-in-project find-by-pinyin-dired fill-column-indicator expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-matchit evil-magit evil-iedit-state evil-anzu eval-sexp-fu etags-select eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elisp-slime-nav dumb-jump discover-my-major diff-hl deft counsel company-web company-statistics column-enforce-mode color-identifiers-mode cmake-font-lock chinese-pyim browse-at-remote boxquote bind-map bbdb auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-pinyin ace-link 4clojure))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 )
